@@ -8,13 +8,6 @@ tools:context="prj3.cs496.client.MainActivity"
 xmlns:tools="http://schemas.android.com/tools"
 android:background="#e9e8dd">
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
 
 
 </LinearLayout>
