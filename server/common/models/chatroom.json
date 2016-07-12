@@ -1,27 +1,24 @@
 {
-  "name" : "ChatRoom",
-  "description":"a  data unit for chatting room",
-  "base" : "PersistedModel",
-  "idInjection" : true,
-  "strict":false,
-  "properties":{
-    "name":{
-      "type":"string",
-      "required":true,
-      "id":true,
-      "description":"name of chat room"
+  "name": "ChatRoom",
+  "description": "a  data unit for chatting room",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": true,
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "description": "name of chat room"
     },
-    "participants":{
-      "type":"hasMany",
-      "required":true,
-      "description":"people who participate in this chat room"
-    },
-    "message":{
-      "type":"hasMany"
-    },
-    "personal_emoticon":{
-      "type":"array",
-      "required":true
+    "participant": {
+      "type": [
+        "object"
+      ],
+      "default": []
     }
-  }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
 }
