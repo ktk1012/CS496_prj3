@@ -1,6 +1,11 @@
 package prj3.cs496.client;
 
+import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.UserRepository;
+import com.strongloop.android.loopback.callbacks.JsonArrayParser;
+import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.remoting.adapters.RestContract;
+import com.strongloop.android.remoting.adapters.RestContractItem;
 
 /**
  * Created by q on 2016-07-12.
@@ -8,6 +13,21 @@ import com.strongloop.android.loopback.UserRepository;
 
 public class MemberRepository extends UserRepository<Member> {
     public interface LoginCallback extends UserRepository.LoginCallback<Member> {
+    }
+
+    @Override
+    public RestContract createContract() {
+        RestContract contract = super.createContract();
+
+        contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:userId" + "/friends", "GET"),
+                getClassName() + ".friends");
+
+        return contract;
+    }
+
+    public void getFriends(String userId, final ListCallback<Member> callback) {
+        invokeStaticMethod("friends", ImmutableMap.of("userId", userId),
+                new JsonArrayParser<Member>(this, callback));
     }
 
     public MemberRepository() {

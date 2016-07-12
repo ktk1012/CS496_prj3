@@ -3,15 +3,22 @@ package prj3.cs496.client;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.strongloop.android.loopback.RestAdapter;
+import com.strongloop.android.loopback.callbacks.ListCallback;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class FriendsFragment extends Fragment {
     public ArrayList<Member> people = new ArrayList<Member>();//name,image for each object
+    private RestAdapter mRestAdapter;
+    private MemberRepository mMemberRepository;
     FriendAdapter adapter;
     public String username;
 
@@ -24,6 +31,8 @@ public class FriendsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new FriendAdapter(getActivity(), people);
+        mRestAdapter = new RestAdapter(getContext(), "http://52.78.69.111:3000/api");
+        mMemberRepository = mRestAdapter.createRepository(MemberRepository.class);
     }
 
     @Override
@@ -32,6 +41,27 @@ public class FriendsFragment extends Fragment {
         View v = inflater.inflate(R.layout.friends_fragment, container, false);
         RecyclerView lv = (RecyclerView) v.findViewById(R.id.list);
         lv.setAdapter(adapter);
+
+        String userId = mMemberRepository.getCurrentUserId().toString();
+        if (userId != null) {
+            Log.d("GET CURRENT USER", userId);
+        }
+
+        mMemberRepository.getFriends(userId, new ListCallback<Member>() {
+            @Override
+            public void onSuccess(List<Member> objects) {
+                Log.d("BADAOHM", String.valueOf(objects.size()));
+//                people.clear();
+                people = (ArrayList<Member>) objects;
+                adapter.updateAdapter((ArrayList<Member>) objects);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.e("GETFRIENDSLIST", t.getMessage());
+            }
+        });
+
         return v;
     }
 }
