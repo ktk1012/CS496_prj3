@@ -2,18 +2,17 @@ package prj3.cs496.client;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,12 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 
-import com.google.gson.JsonArray;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.UserRepository;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
@@ -47,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     /* Loopback rest adapter and repository */
     private RestAdapter mRestAdapter;
     private MemberRepository mMemberRepository;
-
+    public static String server_url_person = "http://ec2-52-78-73-98.ap-northeast-2.compute.amazonaws.com:8081";
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -194,7 +189,9 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if(position == 0)
+                return new FriendsFragment();
+            return PlaceholderFragment.newInstance(position);
         }
 
         @Override
