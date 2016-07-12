@@ -1,4 +1,3 @@
-var loopback = require('loopback');
 
 module.exports = function(ChatRoom){
   'use strict',
