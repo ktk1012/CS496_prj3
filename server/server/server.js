@@ -33,19 +33,6 @@ boot(app, __dirname, function(err) {
 
   // start the server if `$ node server.js`
   if (require.main === module) {
-    app.use(loopback.session({secret: "keyboard cat"}));
-    passportConfigurator.init();
-    passportConfigurator.setupModels({
-      userModel: app.models.User,
-      userIdentityModel: app.models.UserIdentity,
-      userCredentialModel: app.models.UserCredential
-    });
-
-    for (var s in config) {
-      var c = config[s];
-      c.session = c.session !== false;
-      passportConfigurator.configureProvider(s, c);
-    }
     app.start();
   }
 });

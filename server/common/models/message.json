@@ -1,0 +1,35 @@
+{
+  "name": "Message",
+  "plural": "messages",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "roomId": {
+      "type": "string",
+      "required": true
+    },
+    "author": {
+      "type": "object",
+      "required": true
+    },
+    "content": {
+      "type": "object",
+      "required": true
+    }
+  },
+  "mixins": {
+    "TimeStamp": {
+      "createdAt": "createdOn",
+      "required": false,
+      "validateUpsert": true,
+      "silenceWarnings": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

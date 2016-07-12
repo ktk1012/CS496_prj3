@@ -1,31 +1,22 @@
 {
-  "name" : "Member",
-  "description":"a  unit to chat",
-  "base" : "PersistedModel",
-  "idInjection" : true,
-  "strict":false,
-  "properties":{
-    "name":{
-      "type":"string",
-      "required":true,
-      "id":true,
-      "description":"facebook name"
+  "name": "member",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "picture": {
+      "type": "string"
     },
-    "friends":{
-      "type":"array",
-      "required":true,
-      "description":"facebook friends who use the app"
-    },
-    "chatrooms":{
-      "type":"array",
-    "required":true
-    },
-    "basic_emoticion":{
-      "type":"array",
-      "required":true
-    },
-    "basic_gif":{
-
+    "chatroom": {
+      "type": [
+        "string"
+      ]
     }
-  }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
 }
