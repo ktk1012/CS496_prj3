@@ -36,6 +36,9 @@ public class ChatRoomRepository extends ModelRepository<ChatRoom>{
         contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:roomId/message", "GET"),
                 getClassName() + ".getMessage");
 
+        contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:roomId/textmessage", "POST"),
+                getClassName() + ".sendText");
+
 
         return contract;
     }
@@ -61,6 +64,21 @@ public class ChatRoomRepository extends ModelRepository<ChatRoom>{
                     }
                 });
 
+    }
+
+    public void sendText(String roomId, String content, final VoidCallback callback) {
+        invokeStaticMethod("sendText", ImmutableMap.of("roomId", roomId, "content", content),
+                new Adapter.Callback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        callback.onSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        callback.onError(t);
+                    }
+                });
     }
 
 }

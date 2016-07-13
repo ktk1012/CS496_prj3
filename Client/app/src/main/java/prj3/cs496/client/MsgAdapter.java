@@ -1,10 +1,15 @@
 package prj3.cs496.client;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -13,19 +18,25 @@ import java.util.ArrayList;
  */
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
-    private ArrayList<Message> msgs;
+    private JSONArray msgs;
 
     public MsgAdapter() {
-        this.msgs = new ArrayList<Message>();
+        this.msgs = new JSONArray();
     }
 
     @Override
-    public int getItemCount() {return msgs.size();}
+    public int getItemCount() {return msgs.length();}
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Message msg = msgs.get(position);
-        holder.mChatView.setText(msg.getContent().getContent());
+        final JSONObject msg;
+        try {
+            msg = msgs.getJSONObject(position);
+            JSONObject content = msg.getJSONObject("content");
+            holder.mChatView.setText(content.getString("content"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -46,13 +57,13 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
         }
     }
 
-    public void updateAdapter(ArrayList<Message> list) {
-        msgs.clear();
-        msgs.addAll(list);
+    public void updateAdapter(JSONArray newList) {
+        Log.d("UPDATEADAPTER", "newList: " +String.valueOf(newList.length()));
+        msgs = newList;
         this.notifyDataSetChanged();
     }
 
-    public Message getMessage(int position) {
-        return msgs.get(position);
+    public JSONObject getMessage(int position) throws JSONException {
+        return msgs.getJSONObject(position);
     }
 }
