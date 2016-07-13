@@ -24,7 +24,7 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Signup"
             android:label="Signup" />
@@ -42,7 +42,8 @@
             android:label="@string/title_activity_chat_room"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".MediaUpload"></activity>
+        <activity android:name=".MediaUpload" />
+        <activity android:name=".AddRoomActivity"></activity>
     </application>
 
 </manifest>

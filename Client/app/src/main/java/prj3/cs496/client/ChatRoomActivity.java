@@ -95,6 +95,7 @@ public class ChatRoomActivity extends AppCompatActivity
             }
         });
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.chat_list);
         adapter = new MsgAdapter(getApplicationContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
