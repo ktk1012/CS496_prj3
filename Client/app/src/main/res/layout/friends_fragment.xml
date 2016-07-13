@@ -12,6 +12,32 @@
         android:padding="5dp"
         android:weightSum="1">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="70dp">
+
+            <ImageView
+                android:id="@+id/myImg"
+                android:layout_width= "0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="0.8"
+                android:gravity="left|center_vertical"
+                android:text="New Text"
+                android:id="@+id/myName"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
+
+        </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

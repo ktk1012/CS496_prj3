@@ -36,7 +36,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Member member = people.get(position);
-        holder.mNameView.setText(member.getEmail());
+        holder.mNameView.setText(member.getUsername());
         Glide.with(context)
                 .load(member.getPicture_thumb())
                 .into(holder.mImageView);
@@ -62,12 +62,13 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             mView = view;
 
             mImageView = (ImageView) view.findViewById(R.id.profile);
-            mNameView = (TextView) view.findViewById(R.id.email);
+            mNameView = (TextView) view.findViewById(R.id.person_name);
             //mImageView = (ImageView) view.findViewById(R.id.img);
         }
     }
 
     public void updateAdapter(ArrayList<Member> list) {
+
         people.clear();
         people.addAll(list);
         this.notifyDataSetChanged();

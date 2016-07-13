@@ -70,12 +70,10 @@
                 android:id="@+id/edit_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:hint="@string/email_example"
-                android:inputType="textEmailAddress"
+                android:hint="Enter new name"
                 android:layout_weight="2"
                 android:maxLines="1"
-                android:singleLine="true"
-                android:text="Enter new name"/>
+                android:singleLine="true" />
 
             <Button
                 android:layout_width="0dp"
