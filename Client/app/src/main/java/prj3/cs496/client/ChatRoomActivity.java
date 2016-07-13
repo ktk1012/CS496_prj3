@@ -1,8 +1,10 @@
 package prj3.cs496.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,10 +15,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.strongloop.android.loopback.RestAdapter;
+import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.strongloop.android.remoting.adapters.Adapter;
+
+import java.util.List;
+
 public class ChatRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private String roomId;
+    private RestAdapter mRestAdapter;
+    private ChatRoomRepository mChatRoomRepository;
+    private int base = 0;
+    private ChatRoom mChatRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +38,9 @@ public class ChatRoomActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Intent intent = getIntent();
+        roomId = intent.getStringExtra("roomId");
+        Log.d("ROOMID", roomId);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -35,6 +51,20 @@ public class ChatRoomActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
+        mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
+        mChatRoomRepository.join(roomId, new ObjectCallback<ChatRoom>() {
+                    @Override
+                    public void onSuccess(ChatRoom object) {
+                        mChatRoom = object;
+                        Log.d("CHATROOMJOIN", "SUCCESS " + object.getName());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.d("CHATROOMJOIN", "FAIL " + t.getMessage());
+                    }
+                });
     }
 
     @Override

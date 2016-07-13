@@ -54,19 +54,9 @@ public class ChatRoomListFragment extends Fragment{
                     @Override
                     public void onItemClick(View childView, int position) {
                         final ChatRoom room = mAdapter.getChatRoom(position);
-                        mChatRoomRepository.join(room.getId().toString(), new VoidCallback() {
-                            @Override
-                            public void onSuccess() {
-                                Intent intent = new Intent(getContext(), ChatRoomActivity.class);
-                                intent.putExtra("roomId", room.getId().toString());
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void onError(Throwable t) {
-                                Log.d("JOIN", "FAILED: " + t.getMessage());
-                            }
-                        });
+                        Intent intent = new Intent(getContext(), ChatRoomActivity.class);
+                        intent.putExtra("roomId", room.getId().toString());
+                        startActivity(intent);
                     }
 
                     @Override

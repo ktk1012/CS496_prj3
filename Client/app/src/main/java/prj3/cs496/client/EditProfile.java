@@ -101,8 +101,11 @@ public class EditProfile extends Fragment {
             String[] filePath = {MediaStore.Images.Media.DATA};
             Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePath,null,null,null);
             cursor.moveToFirst();
-            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-            img.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+            Uri uri = Uri.parse(cursor.getString(0));
+            Glide.with(getContext())
+                    .load(uri)
+                    .override(600, 600)
+                    .into(img);
         }
     }
 
