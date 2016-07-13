@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.nkzawa.socketio.client.Socket;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.UserRepository;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        Socket socket = ((ChatApp) MainActivity.this.getApplication()).getmSocket();
+        socket.connect();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -238,5 +242,12 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Socket socket = ((ChatApp) MainActivity.this.getApplication()).getmSocket();
+        socket.connect();
     }
 }

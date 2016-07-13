@@ -18,15 +18,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.remoting.adapters.Adapter;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class ChatRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +39,8 @@ public class ChatRoomActivity extends AppCompatActivity
     private int base = 0;
     private ChatRoom mChatRoom;
     private MsgAdapter adapter;
+    private JSONArray mArray = new JSONArray();
+    private PubSub mPubSub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +51,37 @@ public class ChatRoomActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         roomId = intent.getStringExtra("roomId");
-        Log.d("ROOMID", roomId);
         Button sendBtn = (Button) findViewById(R.id.txtsend_btn);
         final EditText chatTxt = (EditText) findViewById(R.id.chat);
+
+        Socket socket = ((ChatApp) ChatRoomActivity.this.getApplication()).getmSocket();
+        mPubSub = new PubSub(socket);
+        SubScribe(mPubSub);
+
+
+
+        mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
+        mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
+
         Button plusBtn = (Button) findViewById(R.id.plus);
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String chat = chatTxt.getText().toString();
-                if(chat == null || chat.isEmpty()){
+                if(chat.length() == 0){
                     Toast.makeText(getApplicationContext(),"Empty",Toast.LENGTH_SHORT).show();
                 }else{
+                    mChatRoomRepository.sendText(roomId, chat, new VoidCallback() {
+                        @Override
+                        public void onSuccess() {
+                            chatTxt.setText("");
+                        }
 
+                        @Override
+                        public void onError(Throwable t) {
+                        }
+                    });
                 }
             }
         });
@@ -83,8 +105,6 @@ public class ChatRoomActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
-        mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
         mChatRoomRepository.join(roomId, new ObjectCallback<ChatRoom>() {
                     @Override
                     public void onSuccess(final ChatRoom object) {
@@ -97,7 +117,10 @@ public class ChatRoomActivity extends AppCompatActivity
                             public void onSuccess(Object response) {
                                 JSONObject obj = (JSONObject) response;
                                 try {
-                                    Log.d("GETMESSAGE", obj.get("messages").toString());
+                                    mArray = obj.getJSONArray("messages");
+                                    Log.d("GETMESSAGE", mArray.toString());
+                                    base = obj.getInt("next");
+                                    adapter.updateAdapter(mArray);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -115,6 +138,21 @@ public class ChatRoomActivity extends AppCompatActivity
                         Log.d("CHATROOMJOIN", "FAIL " + t.getMessage());
                     }
                 });
+
+        /*
+        EditText newmsg = (EditText)findViewById(R.id.chat);
+        newmsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lv.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        lv.scrollToPosition(lv.getAdapter().getItemCount() - 1);
+                    }
+                }, 1000);
+            }
+        });
+        */
     }
 
     @Override
@@ -172,5 +210,26 @@ public class ChatRoomActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void SubScribe(PubSub pubSub) {
+        pubSub.Subscribe("ChatRoom", roomId, "POST", "sendtext", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                ChatRoomActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject data = (JSONObject)args[0];
+                        adapter.appendAdapter(data);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPubSub.UnscribeAll();
     }
 }
