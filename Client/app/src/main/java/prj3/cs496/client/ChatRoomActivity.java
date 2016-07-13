@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
@@ -46,7 +47,7 @@ public class ChatRoomActivity extends AppCompatActivity
             public void onClick(View v) {
                 String chat = chatTxt.getText().toString();
                 if(chat == null && chat.isEmpty()){
-
+                    Toast.makeText(getApplicationContext(),"Empty",Toast.LENGTH_SHORT).show();
                 }else{
 
                 }
