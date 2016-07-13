@@ -19,7 +19,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.strongloop.android.loopback.RestAdapter;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
+
+import java.io.File;
 
 
 public class EditProfile extends Fragment {
@@ -96,16 +99,26 @@ public class EditProfile extends Fragment {
 
         //After selecting profile image from gallery
         if( requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK && data != null){
-            ImageView img = (ImageView) v.findViewById(R.id.profile2);
+            final ImageView img = (ImageView) v.findViewById(R.id.profile2);
             Uri selectedImage = data.getData();
             String[] filePath = {MediaStore.Images.Media.DATA};
             Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePath,null,null,null);
             cursor.moveToFirst();
-            Uri uri = Uri.parse(cursor.getString(0));
-            Glide.with(getContext())
-                    .load(uri)
-                    .override(600, 600)
-                    .into(img);
+            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+            mMemberRepository.testMethod(new File(imagePath), new ObjectCallback<Member>() {
+                @Override
+                public void onSuccess(Member object) {
+                    Glide.with(getContext())
+                            .load(object.getPicture())
+                            .into(img);
+                    ((ChatApp) getActivity().getApplication()).setCurrentUser(object);
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+            });
         }
     }
 
