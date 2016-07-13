@@ -77,6 +77,14 @@ public class ChatRoomActivity extends AppCompatActivity
             }
         });
 
+        plusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MediaUpload.class);
+                startActivity(intent);
+            }
+        });
+
         RecyclerView lv = (RecyclerView) findViewById(R.id.chat_list);
         adapter = new MsgAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
