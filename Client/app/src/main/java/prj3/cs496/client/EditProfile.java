@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +52,9 @@ public class EditProfile extends Fragment {
         Glide.with(getContext())
                 .load(currentUser.getPicture())
                 .into(image);
+
+        TextView useremail = (TextView)v.findViewById(R.id.edit_email_info);
+        useremail.setText(currentUser.getEmail().toString());
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
