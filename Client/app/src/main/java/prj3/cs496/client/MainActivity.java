@@ -195,9 +195,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        public int getItemPosition(Object object) {
+            FriendsFragment f = (FriendsFragment) object;
+            if (f != null) {
+                Log.d("GETITEM", "NOT NULL");
+                f.update();
+            }
+            return super.getItemPosition(object);
+        }
+
+        @Override
         public int getCount() {
             // Show 3 total pages.
             return 2;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Log.d("INSTANTIATE", "ASDFASDF");
+            return super.instantiateItem(container, position);
         }
 
         @Override

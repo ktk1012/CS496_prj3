@@ -10,11 +10,17 @@
         android:layout_height="30dp"
         android:padding="5dp">
 
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width= "30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.3"/>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_weight="0.44"
+            android:layout_weight="0.7"
             android:gravity="center"
             android:text="New Text"
             android:id="@+id/name" />
