@@ -25,10 +25,7 @@ import android.widget.TextView;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.UserRepository;
-import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     /* Loopback rest adapter and repository */
     private RestAdapter mRestAdapter;
     private MemberRepository mMemberRepository;
-    public static String server_url_person = "http://ec2-52-78-73-98.ap-northeast-2.compute.amazonaws.com:8081";
     /**
      * The {@link ViewPager} that will host the section contents.
      */
