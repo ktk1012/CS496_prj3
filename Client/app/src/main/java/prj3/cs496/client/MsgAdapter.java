@@ -1,6 +1,5 @@
 package prj3.cs496.client;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -137,6 +136,7 @@ public class MsgAdapter extends RecyclerView.Adapter {
             msg = msgs.getJSONObject(position);
             JSONObject content = msg.getJSONObject("content");
             JSONObject author = msg.getJSONObject("author");
+            holder.mAuthorView.setText(author.getString("username"));
             Glide.with(context)
                     .load(author.getString("picture_thumb"))
                     .override(75, 75).centerCrop()
@@ -182,10 +182,12 @@ public class MsgAdapter extends RecyclerView.Adapter {
     public class ImageViewHolder extends RecyclerView.ViewHolder {
         public final ImageView mAuthorImgView;
         public final ImageView imageView;
+        public final TextView mAuthorView;
 
         public ImageViewHolder(View v) {
             super(v);
             mAuthorImgView = (ImageView) v.findViewById(R.id.author_img2);
+            mAuthorView = (TextView) v.findViewById(R.id.author2);
             imageView = (ImageView) v.findViewById(R.id.upload_img);
         }
 
