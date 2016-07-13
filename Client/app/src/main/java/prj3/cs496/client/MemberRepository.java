@@ -3,9 +3,19 @@ package prj3.cs496.client;
 import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.UserRepository;
 import com.strongloop.android.loopback.callbacks.JsonArrayParser;
+import com.strongloop.android.loopback.callbacks.JsonObjectParser;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
+import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by q on 2016-07-12.
@@ -25,6 +35,9 @@ public class MemberRepository extends UserRepository<Member> {
         contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:userId" + "/chatrooms", "GET"),
                 getClassName() + ".chatrooms");
 
+        contract.addItem(RestContractItem.createMultipart("/" + getNameForRestUrl() + "/profile", "POST"),
+                getClassName() + ".uploadprofile");
+
         return contract;
     }
 
@@ -36,6 +49,11 @@ public class MemberRepository extends UserRepository<Member> {
     public void getChatRooms(String userId, final ListCallback<ChatRoom> callback) {
         invokeStaticMethod("chatrooms", ImmutableMap.of("userId", userId),
                 new JsonArrayParser<ChatRoom>(new ChatRoomRepository(), callback));
+    }
+
+    public void testMethod(File file, final ObjectCallback<Member> callback) {
+        invokeStaticMethod("uploadprofile", ImmutableMap.of("file", file),
+                new JsonObjectParser<Member>(this, callback));
     }
 
     public MemberRepository() {

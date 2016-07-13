@@ -9,28 +9,28 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by q on 2016-07-13.
+ * Created by q on 2016-07-14.
  */
-public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHolder> {
+public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
-    private ArrayList<ChatRoom> rooms;
+    private ArrayList<Message> msgs;
 
-    public ChatRoomAdapter() {
-        this.rooms = new ArrayList<ChatRoom>();
+    public MsgAdapter() {
+        this.msgs = new ArrayList<Message>();
     }
 
     @Override
-    public int getItemCount() {return rooms.size();}
+    public int getItemCount() {return msgs.size();}
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final ChatRoom room = rooms.get(position);
-        holder.mNameView.setText(room.getName());
+        final Message msg = msgs.get(position);
+        holder.mChatView.setText(msg.getContent().getContent());
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatroom, null, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.message, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
         return new ViewHolder(v);
@@ -38,21 +38,21 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public final TextView mNameView;
+        public final TextView mChatView;
 
         public ViewHolder(View v) {
             super(v);
-            mNameView = (TextView) v.findViewById(R.id.name);
+            mChatView = (TextView) v.findViewById(R.id.message);
         }
     }
 
-    public void updateAdapter(ArrayList<ChatRoom> list) {
-        rooms.clear();
-        rooms.addAll(list);
+    public void updateAdapter(ArrayList<Message> list) {
+        msgs.clear();
+        msgs.addAll(list);
         this.notifyDataSetChanged();
     }
 
-    public ChatRoom getChatRoom(int position) {
-        return rooms.get(position);
+    public Message getMessage(int position) {
+        return msgs.get(position);
     }
 }

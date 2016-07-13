@@ -1,5 +1,6 @@
 package prj3.cs496.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -12,7 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -68,10 +72,16 @@ public class FriendsFragment extends Fragment implements Updatable{
         setHasOptionsMenu(true);
 
         lv.setAdapter(adapter);
-        String userId = mMemberRepository.getCurrentUserId().toString();
-        if (userId != null) {
-            Log.d("GET CURRENT USER", userId);
-        }
+        Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
+        String userId = currentUser.getId().toString();
+        Log.d("USERID", userId);
+        ImageView myPicture = (ImageView)v.findViewById(R.id.myImg);
+        TextView myName = (TextView)v.findViewById(R.id.myName);
+        myName.setText(currentUser.getUsername().toString());
+        Glide.with(getContext())
+                .load(currentUser.getPicture_thumb())
+                .override(100, 100).centerCrop()
+                .into(myPicture);
 
         mMemberRepository.getFriends(userId, new ListCallback<Member>() {
             @Override
@@ -95,6 +105,20 @@ public class FriendsFragment extends Fragment implements Updatable{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem item;
         item = menu.add("Add friend");
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_NEVER);
+        item.setIcon(R.drawable.icon_person_add);
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                Intent intent = new Intent(getContext(), AddFriendActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                Log.d("OPTIONSELECT", String.valueOf(item.getItemId()));
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

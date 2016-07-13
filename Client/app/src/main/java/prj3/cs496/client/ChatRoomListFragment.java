@@ -1,5 +1,6 @@
 package prj3.cs496.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ChatRoomListFragment extends Fragment{
     private RestAdapter mRestAdapter;
     private MemberRepository mMemberRepository;
+    private ChatRoomRepository mChatRoomRepository;
     private ChatRoomAdapter mAdapter;
 
     @Override
@@ -30,6 +32,7 @@ public class ChatRoomListFragment extends Fragment{
         mAdapter = new ChatRoomAdapter();
         mRestAdapter = new RestAdapter(getContext(), "http://52.78.69.111:3000/api");
         mMemberRepository = mRestAdapter.createRepository(MemberRepository.class);
+        mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
     }
 
     @Override
@@ -45,7 +48,25 @@ public class ChatRoomListFragment extends Fragment{
         lv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
         setHasOptionsMenu(true);
 
-        mMemberRepository.getChatRooms(mMemberRepository.getCurrentUserId().toString(),
+        lv.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View childView, int position) {
+                        final ChatRoom room = mAdapter.getChatRoom(position);
+                        Intent intent = new Intent(getContext(), ChatRoomActivity.class);
+                        intent.putExtra("roomId", room.getId().toString());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onItemLongPress(View childView, int position) {
+
+                    }
+                }));
+
+        Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
+        String userId = currentUser.getId().toString();
+        mMemberRepository.getChatRooms(userId,
                 new ListCallback<ChatRoom>() {
                     @Override
                     public void onSuccess(List<ChatRoom> objects) {
