@@ -80,6 +80,7 @@ public class FriendsFragment extends Fragment implements Updatable{
         myName.setText(currentUser.getUsername().toString());
         Glide.with(getContext())
                 .load(currentUser.getPicture_thumb())
+                .override(100, 100).centerCrop()
                 .into(myPicture);
 
         mMemberRepository.getFriends(userId, new ListCallback<Member>() {

@@ -21,6 +21,12 @@ import android.widget.Toast;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+import com.strongloop.android.remoting.adapters.Adapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ChatRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,9 +87,27 @@ public class ChatRoomActivity extends AppCompatActivity
         mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
         mChatRoomRepository.join(roomId, new ObjectCallback<ChatRoom>() {
                     @Override
-                    public void onSuccess(ChatRoom object) {
+                    public void onSuccess(final ChatRoom object) {
                         mChatRoom = object;
-                        Log.d("CHATROOMJOIN", "SUCCESS " + object.getName());
+                        Log.d("JOINSUCCESS", mChatRoom.getName());
+                        setTitle(mChatRoom.getName());
+
+                        mChatRoomRepository.getMessage(roomId, base, new Adapter.JsonCallback() {
+                            @Override
+                            public void onSuccess(Object response) {
+                                JSONObject obj = (JSONObject) response;
+                                try {
+                                    Log.d("GETMESSAGE", obj.get("messages").toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+
+                            }
+                        });
                     }
 
                     @Override
