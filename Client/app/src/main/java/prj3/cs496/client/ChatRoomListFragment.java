@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -54,10 +55,9 @@ public class ChatRoomListFragment extends Fragment{
                     @Override
                     public void onItemClick(View childView, int position) {
                         final ChatRoom room = mAdapter.getChatRoom(position);
-                        mChatRoomRepository.join(room.getId().toString(), new ListCallback<Message>() {
+                        mChatRoomRepository.join(room.getId().toString(), new VoidCallback() {
                             @Override
-                            public void onSuccess(List<Message> objects) {
-                                Log.d("JOIN", "SUCCESS: " + String.valueOf(objects.size()));
+                            public void onSuccess() {
                                 Intent intent = new Intent(getContext(), ChatRoomActivity.class);
                                 intent.putExtra("roomId", room.getId().toString());
                                 startActivity(intent);
