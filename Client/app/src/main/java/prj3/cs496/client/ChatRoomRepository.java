@@ -5,11 +5,15 @@ import android.util.Log;
 import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.callbacks.JsonArrayParser;
+import com.strongloop.android.loopback.callbacks.JsonObjectParser;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -26,16 +30,24 @@ public class ChatRoomRepository extends ModelRepository<ChatRoom>{
         contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:roomId/join", "GET"),
                 getClassName() + ".join");
 
+        contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:roomId/message", "GET"),
+                getClassName() + ".getMessage");
+
         return contract;
     }
 
-    public void join(String roomId, final VoidCallback callback) {
+    public void join(String roomId, final ObjectCallback<ChatRoom> callback) {
         Log.d("JOIN", getNameForRestUrl());
         invokeStaticMethod("join", ImmutableMap.of("roomId", roomId),
-                new Adapter.Callback() {
+                new JsonObjectParser<ChatRoom>(this, callback));
+    }
+
+    public void getMessage(String roomId, int base, final Adapter.JsonCallback callback) {
+        invokeStaticMethod("getMessage", ImmutableMap.of("roomId", roomId, "base", base),
+                new Adapter.JsonObjectCallback() {
                     @Override
-                    public void onSuccess(String response) {
-                       callback.onSuccess();
+                    public void onSuccess(JSONObject response) {
+                       callback.onSuccess(response);
                     }
 
                     @Override
@@ -43,5 +55,7 @@ public class ChatRoomRepository extends ModelRepository<ChatRoom>{
                         callback.onError(t);
                     }
                 });
+
     }
+
 }
