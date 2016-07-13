@@ -10,34 +10,50 @@
     tools:context="prj3.cs496.client.AddRoomActivity">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
-        android:weightSum="1">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="70dp">
-
-            <TextView
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <EditText
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_weight="0.8"
+                android:layout_weight="4"
                 android:gravity="left|center_vertical"
-                android:text="PICK FRIEND"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"/>
+                android:hint="Enter chatting room name"
+                android:id="@+id/roomname" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="ADD"
+                android:id="@+id/room_btn"
+                android:layout_weight = "1"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="PICK FRIEND TO CHAT"
+            android:id="@+id/add"/>
+
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
             android:scrollbars="vertical"
-            android:id="@+id/friendlist" />
+            android:id="@+id/friendlist2" />
 
     </LinearLayout>
 
