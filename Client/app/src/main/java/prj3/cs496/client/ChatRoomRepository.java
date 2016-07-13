@@ -39,8 +39,26 @@ public class ChatRoomRepository extends ModelRepository<ChatRoom>{
         contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:roomId/textmessage", "POST"),
                 getClassName() + ".sendText");
 
+        contract.addItem(RestContractItem.createMultipart("/" + getNameForRestUrl() + "/:roomId/image", "POST"),
+                getClassName() + ".sendImage");
+
 
         return contract;
+    }
+
+    public void sendImage(String roomId, File file, final VoidCallback callback) {
+        invokeStaticMethod("sendImage", ImmutableMap.of("roomId", roomId, "file", file),
+                new Adapter.Callback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        callback.onSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        callback.onError(t);
+                    }
+                });
     }
 
 
