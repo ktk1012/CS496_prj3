@@ -76,7 +76,9 @@ public class ChatRoomListFragment extends Fragment{
                     }
                 }));
 
-        mMemberRepository.getChatRooms(mMemberRepository.getCurrentUserId().toString(),
+        Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
+        String userId = currentUser.getId().toString();
+        mMemberRepository.getChatRooms(userId,
                 new ListCallback<ChatRoom>() {
                     @Override
                     public void onSuccess(List<ChatRoom> objects) {
