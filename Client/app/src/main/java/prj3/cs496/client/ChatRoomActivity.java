@@ -7,6 +7,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 public class ChatRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +30,7 @@ public class ChatRoomActivity extends AppCompatActivity
     private ChatRoomRepository mChatRoomRepository;
     private int base = 0;
     private ChatRoom mChatRoom;
+    private MsgAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class ChatRoomActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 String chat = chatTxt.getText().toString();
-                if(chat == null && chat.isEmpty()){
+                if(chat == null || chat.isEmpty()){
                     Toast.makeText(getApplicationContext(),"Empty",Toast.LENGTH_SHORT).show();
                 }else{
 
@@ -54,6 +58,15 @@ public class ChatRoomActivity extends AppCompatActivity
             }
         });
 
+        RecyclerView lv = (RecyclerView) findViewById(R.id.chat_list);
+        adapter = new MsgAdapter();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        lv.setLayoutManager(linearLayoutManager);
+        lv.setHasFixedSize(true);
+        lv.setAdapter(adapter);
+        lv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getApplicationContext()).build());
+        lv.setAdapter(adapter);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
