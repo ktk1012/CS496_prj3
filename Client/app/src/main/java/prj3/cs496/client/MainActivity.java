@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     /* Loopback rest adapter and repository */
     private RestAdapter mRestAdapter;
     private MemberRepository mMemberRepository;
-    public static String server_url_person = "http://ec2-52-78-73-98.ap-northeast-2.compute.amazonaws.com:8081";
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(1);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         /* Intialize rest adapter */
         mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
         mMemberRepository = mRestAdapter.createRepository(MemberRepository.class);
-
     }
 
 
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -189,31 +190,26 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position == 0)
-                return new FriendsFragment();
-            return PlaceholderFragment.newInstance(position);
+            switch (position) {
+                case 0:
+                    return new FriendsFragment();
+                case 1:
+                    return new ChatRoomListFragment();
+                default:
+                    return PlaceholderFragment.newInstance(position);
+            }
         }
+
 
         @Override
         public int getItemPosition(Object object) {
-            FriendsFragment f = (FriendsFragment) object;
-            if (f != null) {
-                Log.d("GETITEM", "NOT NULL");
-                f.update();
-            }
-            return super.getItemPosition(object);
+            return POSITION_NONE;
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Log.d("INSTANTIATE", "ASDFASDF");
-            return super.instantiateItem(container, position);
+            return 3;
         }
 
         @Override
@@ -223,6 +219,8 @@ public class MainActivity extends AppCompatActivity {
                     return "FRIENDS";
                 case 1:
                     return "CHAT ROOMS";
+                case 2:
+                    return "PROFILE";
             }
             return null;
         }

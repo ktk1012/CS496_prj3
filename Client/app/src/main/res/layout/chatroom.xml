@@ -9,24 +9,17 @@
         android:orientation="horizontal"
         android:layout_height="70dp">
 
-        <ImageView
-            android:id="@+id/profile"
-            android:layout_width= "0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
-
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_weight="0.8"
             android:gravity="left|center_vertical"
             android:text="New Text"
-            android:id="@+id/email"
+            android:id="@+id/name"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="10dp"/>
 
     </LinearLayout>
 
