@@ -211,7 +211,7 @@ public class ChatRoomActivity extends AppCompatActivity
     }
 
     public void SubScribe(PubSub pubSub) {
-        pubSub.Subscribe("ChatRoom", roomId, "POST", "sendtext", new Emitter.Listener() {
+        pubSub.Subscribe("ChatRoom", roomId, "POST", "newMsg", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
                 ChatRoomActivity.this.runOnUiThread(new Runnable() {

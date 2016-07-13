@@ -143,7 +143,7 @@ public class MsgAdapter extends RecyclerView.Adapter {
                     .into(holder.mAuthorImgView);
             Glide.with(context)
                     .load(content.getString("content"))
-                    .override(400, 400).centerCrop()
+                    .override(200, 200).centerCrop()
                     .into(holder.imageView);
         } catch (JSONException e) {
             e.printStackTrace();
