@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 mMemberRepository.logout(new VoidCallback() {
                     @Override
                     public void onSuccess() {
+                        mRestAdapter.clearAccessToken();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();

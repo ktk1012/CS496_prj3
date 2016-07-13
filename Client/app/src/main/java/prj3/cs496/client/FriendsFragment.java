@@ -69,7 +69,8 @@ public class FriendsFragment extends Fragment implements Updatable{
         setHasOptionsMenu(true);
 
         lv.setAdapter(adapter);
-        String userId = mMemberRepository.getCurrentUserId().toString();
+        Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
+        String userId = currentUser.getId().toString();
         Log.d("USERID", userId);
 
         mMemberRepository.getFriends(userId, new ListCallback<Member>() {
