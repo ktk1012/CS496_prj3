@@ -43,17 +43,6 @@ public class MemberRepository extends UserRepository<Member> {
                 new JsonArrayParser<ChatRoom>(new ChatRoomRepository(), callback));
     }
 
-    @Override
-    public Member createUser(String email, String password, Map<String, ?> parameters) {
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.putAll(parameters);
-        params.put("picture", "");
-        params.put("picture_thumb", "");
-        params.put("chatroom", (List<String>) new ArrayList<String>());
-        params.put("friends", (List<String>) new ArrayList<String>());
-        return super.createUser(email, password, parameters);
-    }
-
     public MemberRepository() {
         super("member", null, Member.class);
     }

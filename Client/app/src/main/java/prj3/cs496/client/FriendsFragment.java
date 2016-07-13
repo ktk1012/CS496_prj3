@@ -70,6 +70,7 @@ public class FriendsFragment extends Fragment implements Updatable{
 
         lv.setAdapter(adapter);
         String userId = mMemberRepository.getCurrentUserId().toString();
+        Log.d("USERID", userId);
 
         mMemberRepository.getFriends(userId, new ListCallback<Member>() {
             @Override

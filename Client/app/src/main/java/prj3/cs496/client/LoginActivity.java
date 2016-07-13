@@ -212,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onSuccess(AccessToken token, Member currentUser) {
                     showProgress(false);
-                    Log.d("Authentication Success", currentUser.getEmail());
+                    Log.d("Authentication Success", currentUser.getId().toString());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     ChatApp app = (ChatApp) LoginActivity.this.getApplication();
                     app.setCurrentUser(currentUser);
