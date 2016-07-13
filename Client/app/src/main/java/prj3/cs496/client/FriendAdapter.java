@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -33,7 +36,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Member member = people.get(position);
-        holder.mNameView.setText(member.getUsername());
+        holder.mNameView.setText(member.getEmail());
+        Glide.with(context)
+                .load(member.getPicture_thumb())
+                .into(holder.mImageView);
     }
 
     @Override
@@ -48,13 +54,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mNameView;
+        public final ImageView mImageView;
        // public final ImageView mImageView;
 
         public ViewHolder(View view) {
             super (view);
             mView = view;
 
-            mNameView = (TextView) view.findViewById(R.id.email);
+            mImageView = (ImageView) view.findViewById(R.id.profile);
+            mNameView = (TextView) view.findViewById(R.id.name);
             //mImageView = (ImageView) view.findViewById(R.id.img);
         }
     }
