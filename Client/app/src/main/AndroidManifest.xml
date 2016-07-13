@@ -43,7 +43,8 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MediaUpload" />
-        <activity android:name=".AddRoomActivity"></activity>
+        <activity android:name=".AddRoomActivity"
+            ></activity>
     </application>
 
 </manifest>
