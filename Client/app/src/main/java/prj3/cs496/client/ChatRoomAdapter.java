@@ -51,4 +51,8 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         rooms.addAll(list);
         this.notifyDataSetChanged();
     }
+
+    public ChatRoom getChatRoom(int position) {
+        return rooms.get(position);
+    }
 }

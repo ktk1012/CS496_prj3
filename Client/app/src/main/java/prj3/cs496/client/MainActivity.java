@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.menu_fragment, menu);
+            inflater.inflate(R.menu.menu_main, menu);
             super.onCreateOptionsMenu(menu, inflater);
         }
 

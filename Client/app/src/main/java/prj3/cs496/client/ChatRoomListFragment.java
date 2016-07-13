@@ -1,5 +1,6 @@
 package prj3.cs496.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ListCallback;
@@ -22,6 +24,7 @@ import java.util.List;
 public class ChatRoomListFragment extends Fragment{
     private RestAdapter mRestAdapter;
     private MemberRepository mMemberRepository;
+    private ChatRoomRepository mChatRoomRepository;
     private ChatRoomAdapter mAdapter;
 
     @Override
@@ -30,6 +33,7 @@ public class ChatRoomListFragment extends Fragment{
         mAdapter = new ChatRoomAdapter();
         mRestAdapter = new RestAdapter(getContext(), "http://52.78.69.111:3000/api");
         mMemberRepository = mRestAdapter.createRepository(MemberRepository.class);
+        mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
     }
 
     @Override
@@ -44,6 +48,33 @@ public class ChatRoomListFragment extends Fragment{
         lv.setAdapter(mAdapter);
         lv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
         setHasOptionsMenu(true);
+
+        lv.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View childView, int position) {
+                        final ChatRoom room = mAdapter.getChatRoom(position);
+                        mChatRoomRepository.join(room.getId().toString(), new ListCallback<Message>() {
+                            @Override
+                            public void onSuccess(List<Message> objects) {
+                                Log.d("JOIN", "SUCCESS: " + String.valueOf(objects.size()));
+                                Intent intent = new Intent(getContext(), ChatRoomActivity.class);
+                                intent.putExtra("roomId", room.getId().toString());
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                Log.d("JOIN", "FAILED: " + t.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onItemLongPress(View childView, int position) {
+
+                    }
+                }));
 
         mMemberRepository.getChatRooms(mMemberRepository.getCurrentUserId().toString(),
                 new ListCallback<ChatRoom>() {
