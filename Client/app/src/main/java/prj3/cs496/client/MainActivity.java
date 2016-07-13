@@ -1,7 +1,10 @@
 package prj3.cs496.client;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.UserRepository;
@@ -86,6 +90,13 @@ public class MainActivity extends AppCompatActivity {
         /* Intialize rest adapter */
         mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
         mMemberRepository = mRestAdapter.createRepository(MemberRepository.class);
+
+        //Gallery permission
+        int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 202;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            Toast.makeText(getApplicationContext(), "permission requested", Toast.LENGTH_LONG);
+        }
     }
 
 
@@ -195,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
                     return new FriendsFragment();
                 case 1:
                     return new ChatRoomListFragment();
+                case 2:
+                    return new EditProfile();
                 default:
                     return PlaceholderFragment.newInstance(position);
             }
