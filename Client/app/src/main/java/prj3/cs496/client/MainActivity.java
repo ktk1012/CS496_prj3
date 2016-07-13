@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     /* Loopback rest adapter and repository */
     private RestAdapter mRestAdapter;
     private MemberRepository mMemberRepository;
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
