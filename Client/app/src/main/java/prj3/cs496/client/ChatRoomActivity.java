@@ -20,15 +20,13 @@ import android.widget.Toast;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.remoting.adapters.Adapter;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class ChatRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -131,6 +129,21 @@ public class ChatRoomActivity extends AppCompatActivity
                         Log.d("CHATROOMJOIN", "FAIL " + t.getMessage());
                     }
                 });
+
+        /*
+        EditText newmsg = (EditText)findViewById(R.id.chat);
+        newmsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lv.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        lv.scrollToPosition(lv.getAdapter().getItemCount() - 1);
+                    }
+                }, 1000);
+            }
+        });
+        */
     }
 
     @Override

@@ -22,16 +22,15 @@ import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 <<<<<<< Updated upstream
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-=======
 import com.strongloop.android.loopback.callbacks.VoidCallback;
+=======
 >>>>>>> Stashed changes
 import com.strongloop.android.remoting.adapters.Adapter;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class ChatRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +41,7 @@ public class ChatRoomActivity extends AppCompatActivity
     private int base = 0;
     private ChatRoom mChatRoom;
     private MsgAdapter adapter;
+    private JSONArray mArray = new JSONArray();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +54,17 @@ public class ChatRoomActivity extends AppCompatActivity
         roomId = intent.getStringExtra("roomId");
         Button sendBtn = (Button) findViewById(R.id.txtsend_btn);
         final EditText chatTxt = (EditText) findViewById(R.id.chat);
+
+        mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
+        mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
+
         Button plusBtn = (Button) findViewById(R.id.plus);
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String chat = chatTxt.getText().toString();
-<<<<<<< Updated upstream
-                if(chat == null || chat.isEmpty()){
-=======
                 if(chat.length() == 0){
->>>>>>> Stashed changes
                     Toast.makeText(getApplicationContext(),"Empty",Toast.LENGTH_SHORT).show();
                 }else{
                     mChatRoomRepository.sendText(roomId, chat, new VoidCallback() {
@@ -100,8 +100,6 @@ public class ChatRoomActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
-        mChatRoomRepository = mRestAdapter.createRepository(ChatRoomRepository.class);
         mChatRoomRepository.join(roomId, new ObjectCallback<ChatRoom>() {
                     @Override
                     public void onSuccess(final ChatRoom object) {
@@ -114,8 +112,10 @@ public class ChatRoomActivity extends AppCompatActivity
                             public void onSuccess(Object response) {
                                 JSONObject obj = (JSONObject) response;
                                 try {
-                                    JSONArray array = obj.getJSONArray("messages");
+                                    mArray = obj.getJSONArray("messages");
+                                    Log.d("GETMESSAGE", mArray.toString());
                                     base = obj.getInt("next");
+                                    adapter.updateAdapter(mArray);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
