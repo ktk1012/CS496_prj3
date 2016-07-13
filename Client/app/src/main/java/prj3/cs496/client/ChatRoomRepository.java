@@ -12,9 +12,12 @@ import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
+import com.strongloop.android.remoting.adapters.StreamParam;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,8 +36,10 @@ public class ChatRoomRepository extends ModelRepository<ChatRoom>{
         contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:roomId/message", "GET"),
                 getClassName() + ".getMessage");
 
+
         return contract;
     }
+
 
     public void join(String roomId, final ObjectCallback<ChatRoom> callback) {
         Log.d("JOIN", getNameForRestUrl());
