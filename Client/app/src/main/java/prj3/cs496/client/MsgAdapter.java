@@ -66,4 +66,9 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
     public JSONObject getMessage(int position) throws JSONException {
         return msgs.getJSONObject(position);
     }
+
+    public void appendAdapter(JSONObject newObj) {
+        msgs.put(newObj);
+        notifyItemInserted(msgs.length() - 1);
+    }
 }
