@@ -24,7 +24,7 @@
             android:layout_weight="0.8"
             android:gravity="left|center_vertical"
             android:text="New Text"
-            android:id="@+id/email"
+            android:id="@+id/person_name"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"/>
 

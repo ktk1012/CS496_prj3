@@ -13,7 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -72,6 +75,12 @@ public class FriendsFragment extends Fragment implements Updatable{
         Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
         String userId = currentUser.getId().toString();
         Log.d("USERID", userId);
+        ImageView myPicture = (ImageView)v.findViewById(R.id.myImg);
+        TextView myName = (TextView)v.findViewById(R.id.myName);
+        myName.setText(currentUser.getUsername().toString());
+        Glide.with(getContext())
+                .load(currentUser.getPicture_thumb())
+                .into(myPicture);
 
         mMemberRepository.getFriends(userId, new ListCallback<Member>() {
             @Override

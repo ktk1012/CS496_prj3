@@ -8,13 +8,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.strongloop.android.loopback.RestAdapter;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 
 public class EditProfile extends Fragment {
@@ -37,7 +42,10 @@ public class EditProfile extends Fragment {
         View v = inflater.inflate(R.layout.fragment_edit_profile,container,false);
         Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
         ImageView image = (ImageView) v.findViewById(R.id.profile2);
-
+        Button btn = (Button) v.findViewById(R.id.name_btn);
+        final EditText nameEdit = (EditText) v.findViewById(R.id.edit_name) ;
+        String name = currentUser.getUsername();
+        nameEdit.setHint(name);
         Glide.with(getContext())
                 .load(currentUser.getPicture())
                 .into(image);
@@ -49,6 +57,34 @@ public class EditProfile extends Fragment {
                 startActivityForResult(gallery,SELECT_PICTURE);
             }
         });
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newname = nameEdit.getText().toString();
+                if(newname == null || newname.isEmpty()){
+                    Toast.makeText(getActivity().getApplicationContext(),"Enter new name",Toast.LENGTH_LONG).show();
+                }else{
+                    //send new name to db
+                    Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
+                    currentUser.setUsername(newname);
+                    currentUser.save(new VoidCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d("EDITNAME", "SUCCESS");
+                            Toast.makeText(getActivity().getApplicationContext(), "name is changed", Toast.LENGTH_SHORT);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            Log.d("EDITNAME", "FAIL: " + t.getMessage());
+                            Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT);
+                        }
+                    });
+                }
+            }
+        });
+
         this.v = v;
         return v;
     }
@@ -57,6 +93,8 @@ public class EditProfile extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
+
+        //After selecting profile image from gallery
         if( requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK && data != null){
             ImageView img = (ImageView) v.findViewById(R.id.profile2);
             Uri selectedImage = data.getData();
