@@ -1,5 +1,6 @@
 package prj3.cs496.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -69,9 +70,6 @@ public class FriendsFragment extends Fragment implements Updatable{
 
         lv.setAdapter(adapter);
         String userId = mMemberRepository.getCurrentUserId().toString();
-        if (userId != null) {
-            Log.d("GET CURRENT USER", userId);
-        }
 
         mMemberRepository.getFriends(userId, new ListCallback<Member>() {
             @Override
@@ -95,6 +93,20 @@ public class FriendsFragment extends Fragment implements Updatable{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem item;
         item = menu.add("Add friend");
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_NEVER);
+        item.setIcon(R.drawable.icon_person_add);
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                Intent intent = new Intent(getContext(), AddFriendActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                Log.d("OPTIONSELECT", String.valueOf(item.getItemId()));
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
