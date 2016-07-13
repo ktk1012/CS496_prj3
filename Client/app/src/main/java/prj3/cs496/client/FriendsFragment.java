@@ -30,6 +30,7 @@ public class FriendsFragment extends Fragment implements Updatable{
 
     public void update() {
         String userId = mMemberRepository.getCurrentUserId().toString();
+        Log.d("UPDATE", "UPDATE" + userId);
         mMemberRepository.getFriends(userId, new ListCallback<Member>() {
             @Override
             public void onSuccess(List<Member> objects) {
@@ -43,12 +44,6 @@ public class FriendsFragment extends Fragment implements Updatable{
                 Log.e("GETFRIENDSLIST", t.getMessage());
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("RESUMEEEEE", "RERERE");
     }
 
     @Override
