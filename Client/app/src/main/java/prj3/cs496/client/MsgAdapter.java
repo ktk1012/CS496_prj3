@@ -32,7 +32,9 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
         try {
             msg = msgs.getJSONObject(position);
             JSONObject content = msg.getJSONObject("content");
+            JSONObject author = msg.getJSONObject("author");
             holder.mChatView.setText(content.getString("content"));
+            holder.mAuthorView.setText(author.getString("username"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

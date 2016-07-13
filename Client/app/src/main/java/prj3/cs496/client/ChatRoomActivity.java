@@ -41,6 +41,7 @@ public class ChatRoomActivity extends AppCompatActivity
     private MsgAdapter adapter;
     private JSONArray mArray = new JSONArray();
     private PubSub mPubSub;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,15 +95,16 @@ public class ChatRoomActivity extends AppCompatActivity
             }
         });
 
-        RecyclerView lv = (RecyclerView) findViewById(R.id.chat_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.chat_list);
         adapter = new MsgAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        lv.setLayoutManager(linearLayoutManager);
-        lv.setHasFixedSize(true);
-        lv.setAdapter(adapter);
-        lv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getApplicationContext()).build());
-        lv.setAdapter(adapter);
+        linearLayoutManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getApplicationContext()).build());
+        mRecyclerView.setAdapter(adapter);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -228,7 +230,9 @@ public class ChatRoomActivity extends AppCompatActivity
                     @Override
                     public void run() {
                         JSONObject data = (JSONObject)args[0];
-                        adapter.appendAdapter(data);
+                        mArray.put(data);
+                        adapter.notifyItemInserted(mArray.length() - 1);
+                        mRecyclerView.scrollToPosition(mArray.length() - 1);
                     }
                 });
             }
