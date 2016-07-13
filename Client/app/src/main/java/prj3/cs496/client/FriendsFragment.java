@@ -121,4 +121,22 @@ public class FriendsFragment extends Fragment implements Updatable{
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
+        String userId = currentUser.getId().toString();
+        mMemberRepository.getFriends(userId, new ListCallback<Member>() {
+            @Override
+            public void onSuccess(List<Member> objects) {
+                adapter.updateAdapter((ArrayList<Member>) objects);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
 }

@@ -1,5 +1,6 @@
 package prj3.cs496.client;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,9 +21,11 @@ import org.json.JSONObject;
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
     private JSONArray msgs;
+    private Context context;
 
-    public MsgAdapter() {
+    public MsgAdapter(Context context) {
         this.msgs = new JSONArray();
+        this.context = context;
     }
 
     @Override
@@ -35,6 +40,10 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
             JSONObject author = msg.getJSONObject("author");
             holder.mChatView.setText(content.getString("content"));
             holder.mAuthorView.setText(author.getString("username"));
+            Glide.with(context)
+                    .load(author.getString("picture_thumb"))
+                    .override(75, 75).centerCrop()
+                    .into(holder.mAuthorImgView);
         } catch (JSONException e) {
             e.printStackTrace();
         }
