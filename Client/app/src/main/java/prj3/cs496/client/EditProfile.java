@@ -3,7 +3,6 @@ package prj3.cs496.client;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -75,13 +74,13 @@ public class EditProfile extends Fragment {
                         @Override
                         public void onSuccess() {
                             Log.d("EDITNAME", "SUCCESS");
-                            Toast.makeText(getActivity().getApplicationContext(), "name is changed", Toast.LENGTH_SHORT);
+                            Toast.makeText(getActivity().getApplicationContext(), "name is changed", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable t) {
                             Log.d("EDITNAME", "FAIL: " + t.getMessage());
-                            Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT);
+                            Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
