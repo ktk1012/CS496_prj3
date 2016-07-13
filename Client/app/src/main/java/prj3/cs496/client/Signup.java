@@ -12,6 +12,8 @@ import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
+import java.util.ArrayList;
+
 /**
  * Created by q on 2016-07-13.
  */
@@ -72,7 +74,12 @@ public class Signup extends AppCompatActivity {
             }
 
             Member member = mMemberRepository.createUser(email, password,
-                    ImmutableMap.of("username", name));
+                    ImmutableMap.of(
+                            "username", name,
+                            "friends", new ArrayList<String>(),
+                            "chatroom", new ArrayList<String>(),
+                            "picture", "http://cs496bucket.s3.amazonaws.com/placeholder.jpg",
+                            "picture_thumb", "http://cs496bucket.s3.amazonaws.com/placeholder_thumb.jpg"));
 
             member.save(new VoidCallback() {
                 @Override
