@@ -23,12 +23,20 @@ public class MemberRepository extends UserRepository<Member> {
                 getClassName() + ".friends");
 //        contract.addItem(RestContractItem.createMultipart("/" + getCachedCurrentUser()));
 
+        contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:userId" + "/chatrooms", "GET"),
+                getClassName() + ".chatrooms");
+
         return contract;
     }
 
     public void getFriends(String userId, final ListCallback<Member> callback) {
         invokeStaticMethod("friends", ImmutableMap.of("userId", userId),
                 new JsonArrayParser<Member>(this, callback));
+    }
+
+    public void getChatRooms(String userId, final ListCallback<ChatRoom> callback) {
+        invokeStaticMethod("chatrooms", ImmutableMap.of("userId", userId),
+                new JsonArrayParser<ChatRoom>(new ChatRoomRepository(), callback));
     }
 
     public MemberRepository() {
