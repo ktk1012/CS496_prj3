@@ -96,7 +96,7 @@ public class ChatRoomActivity extends AppCompatActivity
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.chat_list);
-        adapter = new MsgAdapter();
+        adapter = new MsgAdapter(getApplicationContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setStackFromEnd(true);
@@ -233,6 +233,26 @@ public class ChatRoomActivity extends AppCompatActivity
                         mArray.put(data);
                         adapter.notifyItemInserted(mArray.length() - 1);
                         mRecyclerView.scrollToPosition(mArray.length() - 1);
+                    }
+                });
+            }
+        });
+
+        pubSub.Subscribe("ChatRoom", roomId, "GET", "join", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                ChatRoomActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject data = (JSONObject)args[0];
+                        String username = null;
+                        try {
+                            username = data.getString("username");
+                            Toast.makeText(getApplicationContext(), username + " Join",
+                                    Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }

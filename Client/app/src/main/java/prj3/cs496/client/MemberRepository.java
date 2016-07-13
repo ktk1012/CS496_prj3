@@ -38,6 +38,9 @@ public class MemberRepository extends UserRepository<Member> {
         contract.addItem(RestContractItem.createMultipart("/" + getNameForRestUrl() + "/profile", "POST"),
                 getClassName() + ".uploadprofile");
 
+        contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:userId/friend/:friendEmail", "PUT"),
+                getClassName() + ".addFriend");
+
         return contract;
     }
 
@@ -54,6 +57,21 @@ public class MemberRepository extends UserRepository<Member> {
     public void testMethod(File file, final ObjectCallback<Member> callback) {
         invokeStaticMethod("uploadprofile", ImmutableMap.of("file", file),
                 new JsonObjectParser<Member>(this, callback));
+    }
+
+    public void addFriend(String userId, String friendEmail, final VoidCallback callback) {
+        invokeStaticMethod("addFriend", ImmutableMap.of("userId", userId, "friendEmail", friendEmail),
+                new Adapter.Callback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        callback.onSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        callback.onError(t);
+                    }
+                });
     }
 
     public MemberRepository() {

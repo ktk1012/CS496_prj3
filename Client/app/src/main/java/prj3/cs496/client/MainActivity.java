@@ -256,9 +256,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Socket socket = ((ChatApp) MainActivity.this.getApplication()).getmSocket();
         socket.connect();
     }
+
 }
