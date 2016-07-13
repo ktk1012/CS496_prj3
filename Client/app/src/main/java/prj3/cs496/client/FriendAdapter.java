@@ -13,10 +13,12 @@ import java.util.ArrayList;
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder> {
 
     private Context context;
+    private LayoutInflater mLayoutInflater;
     private ArrayList<Member> people;
 
     public FriendAdapter(Context context, ArrayList<Member> people){
         this.context = context;
+        this.mLayoutInflater = LayoutInflater.from(context);
         this.people = people;
     }
 
@@ -37,7 +39,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.person,null,false);
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
         return new ViewHolder(v);
     }
@@ -51,8 +54,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             super (view);
             mView = view;
 
-            mNameView = (TextView) view.findViewById(R.id.name);
+            mNameView = (TextView) view.findViewById(R.id.email);
             //mImageView = (ImageView) view.findViewById(R.id.img);
         }
+    }
+
+    public void updateAdapter(ArrayList<Member> list) {
+        people.clear();
+        people.addAll(list);
+        this.notifyDataSetChanged();
     }
 }
