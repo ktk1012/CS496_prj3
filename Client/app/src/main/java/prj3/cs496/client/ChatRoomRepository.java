@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.callbacks.JsonArrayParser;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
+import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 
@@ -27,9 +29,19 @@ public class ChatRoomRepository extends ModelRepository<ChatRoom>{
         return contract;
     }
 
-    public void join(String roomId, final ListCallback<Message> callback) {
+    public void join(String roomId, final VoidCallback callback) {
         Log.d("JOIN", getNameForRestUrl());
         invokeStaticMethod("join", ImmutableMap.of("roomId", roomId),
-                new JsonArrayParser<Message>(new MessageRepository(), callback));
+                new Adapter.Callback() {
+                    @Override
+                    public void onSuccess(String response) {
+                       callback.onSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        callback.onError(t);
+                    }
+                });
     }
 }
