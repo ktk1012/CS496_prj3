@@ -21,7 +21,6 @@ public class MemberRepository extends UserRepository<Member> {
 
         contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:userId" + "/friends", "GET"),
                 getClassName() + ".friends");
-//        contract.addItem(RestContractItem.createMultipart("/" + getCachedCurrentUser()));
 
         return contract;
     }

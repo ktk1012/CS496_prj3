@@ -34,7 +34,6 @@ public class FriendsFragment extends Fragment implements Updatable{
             @Override
             public void onSuccess(List<Member> objects) {
                 Log.d("BADAOHM", String.valueOf(objects.size()));
-//                people.clear();
                 people = (ArrayList<Member>) objects;
                 adapter.updateAdapter((ArrayList<Member>) objects);
             }
@@ -73,6 +72,7 @@ public class FriendsFragment extends Fragment implements Updatable{
         lv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
         setHasOptionsMenu(true);
 
+        lv.setAdapter(adapter);
         String userId = mMemberRepository.getCurrentUserId().toString();
         if (userId != null) {
             Log.d("GET CURRENT USER", userId);
@@ -92,7 +92,6 @@ public class FriendsFragment extends Fragment implements Updatable{
                 Log.e("GETFRIENDSLIST", t.getMessage());
             }
         });
-
 
         return v;
     }

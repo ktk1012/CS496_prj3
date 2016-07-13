@@ -62,11 +62,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             mView = view;
 
             mImageView = (ImageView) view.findViewById(R.id.profile);
-            mNameView = (TextView) view.findViewById(R.id.name);
+            mNameView = (TextView) view.findViewById(R.id.email);
             //mImageView = (ImageView) view.findViewById(R.id.img);
         }
     }
-
 
     public void updateAdapter(ArrayList<Member> list) {
         people.clear();
