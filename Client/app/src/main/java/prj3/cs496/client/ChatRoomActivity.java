@@ -91,6 +91,7 @@ public class ChatRoomActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MediaUpload.class);
+                intent.putExtra("roomId", roomId);
                 startActivity(intent);
             }
         });
@@ -150,20 +151,6 @@ public class ChatRoomActivity extends AppCompatActivity
                     }
                 });
 
-        /*
-        EditText newmsg = (EditText)findViewById(R.id.chat);
-        newmsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                lv.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        lv.scrollToPosition(lv.getAdapter().getItemCount() - 1);
-                    }
-                }, 1000);
-            }
-        });
-        */
     }
 
     @Override
@@ -265,4 +252,5 @@ public class ChatRoomActivity extends AppCompatActivity
         super.onDestroy();
         mPubSub.UnscribeAll();
     }
+
 }
