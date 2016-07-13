@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -49,10 +50,13 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
         public final TextView mChatView;
         public final TextView mAuthorView;
+        public final ImageView mAuthorImgView;
+
         public ViewHolder(View v) {
             super(v);
             mChatView = (TextView) v.findViewById(R.id.message);
             mAuthorView = (TextView) v.findViewById(R.id.author);
+            mAuthorImgView = (ImageView) v.findViewById(R.id.author_img);
         }
     }
 
