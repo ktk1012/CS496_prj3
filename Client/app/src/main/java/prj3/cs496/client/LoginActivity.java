@@ -80,26 +80,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mRestAdapter = new RestAdapter(getApplicationContext(), "http://52.78.69.111:3000/api");
         mMemberRepository = mRestAdapter.createRepository(MemberRepository.class);
 
-        /* Find current user, if found go to Main activity immediately */
-        mMemberRepository.findCurrentUser(new ObjectCallback<Member>() {
-            @Override
-            public void onSuccess(Member object) {
-                if (object != null) {
-                    Log.d("FINDUSER", "SUCCESS");
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Log.d("FINDUSER", "NO USER");
-                }
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                Log.d("FINDUSER", t.getMessage());
-            }
-        });
-
         setContentView(R.layout.activity_login);
 
 
@@ -234,6 +214,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     showProgress(false);
                     Log.d("Authentication Success", currentUser.getEmail());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    ChatApp app = (ChatApp) LoginActivity.this.getApplication();
+                    app.setCurrentUser(currentUser);
                     startActivity(intent);
                     finish();
                 }
