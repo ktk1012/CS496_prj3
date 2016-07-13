@@ -5,10 +5,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".ChatApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".ChatApp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -40,7 +40,8 @@
             android:name=".ChatRoomActivity"
             android:label="@string/title_activity_chat_room"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".MediaUpload"></activity>
     </application>
 
 </manifest>
