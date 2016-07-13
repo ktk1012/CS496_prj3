@@ -11,8 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 /**
  * Created by q on 2016-07-14.
  */
@@ -50,10 +48,11 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView mChatView;
-
+        public final TextView mAuthorView;
         public ViewHolder(View v) {
             super(v);
             mChatView = (TextView) v.findViewById(R.id.message);
+            mAuthorView = (TextView) v.findViewById(R.id.author);
         }
     }
 
