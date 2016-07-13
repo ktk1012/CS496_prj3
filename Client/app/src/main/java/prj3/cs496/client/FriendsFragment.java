@@ -12,10 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
-import com.strongloop.android.loopback.RestAdapter;
-import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ListCallback;
@@ -97,10 +93,6 @@ public class FriendsFragment extends Fragment implements Updatable{
             }
         });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
         return v;
     }
 
