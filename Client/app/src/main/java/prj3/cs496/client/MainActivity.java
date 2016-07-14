@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,10 +28,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.UserRepository;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     /* Loopback rest adapter and repository */
     private RestAdapter mRestAdapter;
     private MemberRepository mMemberRepository;
+
+    private PubSub mPubSub;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -76,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         Socket socket = ((ChatApp) MainActivity.this.getApplication()).getmSocket();
         socket.connect();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -264,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Socket socket = ((ChatApp) MainActivity.this.getApplication()).getmSocket();
-        socket.connect();
+        socket.disconnect();
     }
 
 }

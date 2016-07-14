@@ -182,6 +182,12 @@ public class ChatRoomActivity extends AppCompatActivity
             return true;
         }
 
+        if (id == R.id.action_invite) {
+            Intent intent = new Intent(ChatRoomActivity.this, InviteFriend.class);
+            intent.putExtra("roomId", roomId);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

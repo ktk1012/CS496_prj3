@@ -41,7 +41,25 @@ public class MemberRepository extends UserRepository<Member> {
         contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:userId/friend/:friendEmail", "PUT"),
                 getClassName() + ".addFriend");
 
+        contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:friendId/invite/:roomId", "GET"),
+                getClassName() + ".invite");
+
         return contract;
+    }
+
+    public void invite(String friendId, String roomId, final VoidCallback callback) {
+        invokeStaticMethod("invite", ImmutableMap.of("friendId", friendId, "roomId", roomId),
+                new Adapter.Callback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        callback.onSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        callback.onError(t);
+                    }
+                });
     }
 
     public void getFriends(String userId, final ListCallback<Member> callback) {
