@@ -82,21 +82,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
 
-        mMemberRepository.findCurrentUser(new ObjectCallback<Member>() {
-            @Override
-            public void onSuccess(Member object) {
-                ((ChatApp) LoginActivity.this.getApplication()).setCurrentUser(object);
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-        });
-
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);

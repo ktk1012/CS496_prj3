@@ -36,6 +36,7 @@ public class AddFriendActivity extends AppCompatActivity {
                     mMemberRepository.addFriend(userId, chat, new VoidCallback() {
                         @Override
                         public void onSuccess() {
+                            Log.d("ADDFRIEND", "SUCCESS");
                             finish();
                         }
 

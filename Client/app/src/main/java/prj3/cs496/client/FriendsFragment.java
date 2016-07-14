@@ -71,7 +71,6 @@ public class FriendsFragment extends Fragment implements Updatable{
         lv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
         setHasOptionsMenu(true);
 
-        lv.setAdapter(adapter);
         Member currentUser = ((ChatApp) getActivity().getApplication()).getCurrentUser();
         String userId = currentUser.getId().toString();
         Log.d("USERID", userId);
